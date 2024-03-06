@@ -1,0 +1,36 @@
+# Use the official Python 3.12 image from Docker Hub
+FROM python:3.12
+
+# Create a non-root user with sudo access
+RUN useradd -m user && echo "user:user" | chpasswd && adduser user sudo
+
+# Install sudo and curl
+RUN apt-get update && apt-get install -y sudo curl
+
+# Install Zsh
+RUN apt-get install -y zsh
+
+# Set Zsh as the default shell
+SHELL ["/bin/zsh", "-c"]
+
+# Switch to the new user
+USER user
+
+# Set the working directory
+WORKDIR /home/user/dbg_sandbox
+
+# Change the ownership of the workdir to the user
+RUN chown -R user:user /home/user/dbg_sandbox
+
+# Install Oh My Zsh for user
+RUN sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" && \
+    sed -i 's/ZSH_THEME="robbyrussell"/ZSH_THEME="robbyrussell"/g' ~/.zshrc
+
+# Update pip
+RUN pip install --upgrade pip
+
+# Create a virtual environment and activate it in terminals
+RUN python -m venv ~/venv && echo "source ~/venv/bin/activate" >> ~/.zshrc
+
+# Install Python libraries
+RUN ~/venv/bin/pip install pytest flit jupyter ipykernel

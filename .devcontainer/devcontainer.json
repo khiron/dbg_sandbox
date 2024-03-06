@@ -1,0 +1,26 @@
+{
+    "name": "Python 3.12 Dev Container",
+    "dockerFile": "Dockerfile",
+    "settings": {
+        "terminal.integrated.shell.linux": "/bin/zsh",
+        "python.pythonPath": "/home/user/venv/bin/python",
+        "python.linting.enabled": true,
+        "python.linting.pylintEnabled": true,
+        "python.formatting.autopep8Path": "/home/user/venv/bin/autopep8",
+        "python.formatting.blackPath": "/home/user/venv/bin/black",
+        "python.formatting.yapfPath": "/home/user/venv/bin/yapf",
+        "python.linting.banditPath": "/home/user/venv/bin/bandit",
+        "python.linting.flake8Path": "/home/user/venv/bin/flake8",
+        "python.linting.mypyPath": "/home/user/venv/bin/mypy",
+        "python.linting.pycodestylePath": "/home/user/venv/bin/pycodestyle",
+        "python.linting.pydocstylePath": "/home/user/venv/bin/pylama",
+        "python.linting.pylintPath": "/home/user/venv/bin/pylint"
+    },
+    "extensions": ["ms-python.python", "ms-toolsai.jupyter"],
+    "remoteUser": "user",
+    "mounts": ["source=${localWorkspaceFolder},target=/home/user/dbg_sandbox,type=bind,consistency=cached"],
+    "runArgs": ["-v", "/var/run/docker.sock:/var/run/docker.sock"],
+    "postCreateCommand": "echo 'Container is ready!'",
+    "workspaceFolder": "/home/user/dbg_sandbox",
+    "sshAgentForwarding": true
+}
