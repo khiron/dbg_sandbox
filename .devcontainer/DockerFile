@@ -5,7 +5,10 @@ FROM python:3.12
 RUN useradd -m user && echo "user:user" | chpasswd && adduser user sudo
 
 # Install sudo and curl
-RUN apt-get update && apt-get install -y sudo curl
+RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y sudo curl
+
+# Allow the user to use sudo without a password
+RUN echo "user ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
 
 # Install Zsh
 RUN apt-get install -y zsh

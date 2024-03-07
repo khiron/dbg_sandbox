@@ -18,9 +18,12 @@
     },
     "extensions": ["ms-python.python", "ms-toolsai.jupyter"],
     "remoteUser": "user",
-    "mounts": ["source=${localWorkspaceFolder},target=/home/user/dbg_sandbox,type=bind,consistency=cached"],
+    "mounts": [
+        "source=${localWorkspaceFolder},target=/home/user/dbg_sandbox,type=bind,consistency=cached",
+        "source=${localEnv:HOME}${localEnv:USERPROFILE}/.ssh,target=/home/user/.ssh,type=bind"
+    ],
     "runArgs": ["-v", "/var/run/docker.sock:/var/run/docker.sock"],
-    "postCreateCommand": "echo 'Container is ready!'",
     "workspaceFolder": "/home/user/dbg_sandbox",
-    "sshAgentForwarding": true
+    "sshAgentForwarding": true,
+    "postCreateCommand": "sleep 5 && mkdir -p /home/user/.ssh && sudo chown -R user:user /home/user/.ssh && sudo chmod 700 /home/user/.ssh && sudo chmod 600 /home/user/.ssh;"
 }
