@@ -17,7 +17,12 @@
         "python.linting.pydocstylePath": "/home/user/venv/bin/pylama",
         "python.linting.pylintPath": "/home/user/venv/bin/pylint"
     },
-    "extensions": ["ms-python.python", "ms-toolsai.jupyter", "ms-python.pylint", "GitHub.copilot-chat","GitHub.copilot"],
+    "extensions": [
+        "ms-python.python", 
+        "ms-toolsai.jupyter", 
+        "ms-python.pylint", 
+        "GitHub.copilot-chat",
+        "GitHub.copilot"],
     "remoteUser": "user",
     "mounts": [
         "source=${localWorkspaceFolder},target=/home/user/dbg_sandbox,type=bind,consistency=cached",
