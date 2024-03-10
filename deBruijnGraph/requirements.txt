@@ -1,0 +1,11 @@
+black==23.12.1
+isort==5.13.2
+click==8.1.7
+pytest
+flit
+jupyter
+ipykernel
+ipywidgets
+pygraphviz
+networkx
+matplotlib

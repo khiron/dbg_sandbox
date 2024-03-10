@@ -5,13 +5,19 @@ FROM python:3.12
 RUN useradd -m user && echo "user:user" | chpasswd && adduser user sudo
 
 # Install sudo and curl
-RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y sudo curl
+RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y sudo curl graphviz libgraphviz-dev
 
 # Allow the user to use sudo without a password
 RUN echo "user ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
 
 # Install Zsh
 RUN apt-get install -y zsh
+
+# Install fzf (fuzzy finder)
+RUN sudo apt install fzf
+
+# Install Zoxide
+RUN sudo apt install -y zoxide 
 
 # Set Zsh as the default shell
 SHELL ["/bin/zsh", "-c"]
@@ -25,6 +31,10 @@ WORKDIR /home/user/dbg_sandbox
 # Change the ownership of the workdir to the user
 RUN chown -R user:user /home/user/dbg_sandbox
 
+# create a .ssh directory for the user and set the permissions
+RUN mkdir -p /home/user/.ssh
+RUN sudo chown -R user:user /home/user/.ssh && chmod 700 /home/user/.ssh
+
 # Install Oh My Zsh for user
 RUN sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" && \
     sed -i 's/ZSH_THEME="robbyrussell"/ZSH_THEME="robbyrussell"/g' ~/.zshrc
@@ -35,5 +45,14 @@ RUN pip install --upgrade pip
 # Create a virtual environment and activate it in terminals
 RUN python -m venv ~/venv && echo "source ~/venv/bin/activate" >> ~/.zshrc
 
-# Install Python libraries
-RUN ~/venv/bin/pip install pytest flit jupyter ipykernel
+# Install Zoxide in the shell
+RUN zoxide init zsh > /tmp/zoxide_init.zsh
+RUN echo "source /tmp/zoxide_init.zsh" >> ~/.zshrc
+
+# Install Python libraries from requirements.txt
+COPY ../deBruijnGraph/requirements.txt .
+RUN ~/venv/bin/pip install -r requirements.txt
+
+# Preload commands into the shell's history
+RUN echo 'cd /home/user/dbg_sandbox/deBruijnGraph && flit install -s --python $(which python)' >> ~/.zsh_history
+RUN echo 'ssh -T git@github.com' >> ~/.zsh_history

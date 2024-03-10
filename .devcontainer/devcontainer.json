@@ -1,6 +1,7 @@
 {
-    "name": "Python 3.12 Dev Container",
+    "name": "DBG_SANDBOX Container",
     "dockerFile": "Dockerfile",
+    "context": "..",
     "settings": {
         "terminal.integrated.shell.linux": "/bin/zsh",
         "python.pythonPath": "/home/user/venv/bin/python",
@@ -16,7 +17,7 @@
         "python.linting.pydocstylePath": "/home/user/venv/bin/pylama",
         "python.linting.pylintPath": "/home/user/venv/bin/pylint"
     },
-    "extensions": ["ms-python.python", "ms-toolsai.jupyter"],
+    "extensions": ["ms-python.python", "ms-toolsai.jupyter", "ms-python.pylint", "GitHub.copilot-chat","GitHub.copilot"],
     "remoteUser": "user",
     "mounts": [
         "source=${localWorkspaceFolder},target=/home/user/dbg_sandbox,type=bind,consistency=cached",
@@ -24,6 +25,5 @@
     ],
     "runArgs": ["-v", "/var/run/docker.sock:/var/run/docker.sock"],
     "workspaceFolder": "/home/user/dbg_sandbox",
-    "sshAgentForwarding": true,
-    "postCreateCommand": "sleep 5 && mkdir -p /home/user/.ssh && sudo chown -R user:user /home/user/.ssh && sudo chmod 700 /home/user/.ssh && sudo chmod 600 /home/user/.ssh;"
+    "postCreateCommand": "sleep 5 && mkdir -p /home/user/.ssh && sudo chown -R user:user /home/user/.ssh && sudo chmod 700 /home/user/.ssh && sudo chmod 600 /home/user/.ssh/*",
 }
