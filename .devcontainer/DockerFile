@@ -29,7 +29,7 @@ USER user
 WORKDIR /home/user/dbg_sandbox
 
 # Change the ownership of the workdir to the user
-RUN chown -R user:user /home/user/dbg_sandbox
+RUN sudo chown -R user:user /home/user/dbg_sandbox
 
 # create a .ssh directory for the user and set the permissions
 RUN mkdir -p /home/user/.ssh
@@ -50,7 +50,7 @@ RUN zoxide init zsh > /tmp/zoxide_init.zsh
 RUN echo "source /tmp/zoxide_init.zsh" >> ~/.zshrc
 
 # Install Python libraries from requirements.txt
-COPY ../deBruijnGraph/requirements.txt .
+COPY deBruijnGraph/requirements.txt .
 RUN ~/venv/bin/pip install -r requirements.txt
 
 # Preload commands into the shell's history
